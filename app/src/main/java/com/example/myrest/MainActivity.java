@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -32,11 +33,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getUser() {
+        Log.e("user", "get user");
         Call<ResponseBody> call = MyApp.getInstance().getRestApi().getUsers();
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.e("user", response.toString());
+
+                String data = "-";
+
+                try {
+                    data = response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Toast.makeText(MainActivity.this, data, Toast.LENGTH_LONG).show();
+
             }
 
             @Override
